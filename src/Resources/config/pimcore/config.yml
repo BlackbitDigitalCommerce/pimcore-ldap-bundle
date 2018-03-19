@@ -1,0 +1,11 @@
+alep_ldap:
+    enabled: false
+    service: 'Symfony\Component\Ldap\Ldap'
+    base_dn: ~
+    search_dn: ~
+    search_password: ~
+    default_roles: ~
+    uid_key: 'sAMAccountName'
+    filter: '({uid_key}={username})'
+    exclude: ~
+    mapper: 'Alep\LdapBundle\DataMapper\DefaultLdapUserMapper'
