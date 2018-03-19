@@ -1,5 +1,6 @@
 # LDAP bundle for Pimcore
 Enables LDAP authentication to the Pimcore's admin UI.
+
 If a user already exists in Pimcore (and is not in the list of the excluded users) it will be automatically updated with the informations comeing from LDAP. If not a new user will be created automatically.
 
 ## Installation
