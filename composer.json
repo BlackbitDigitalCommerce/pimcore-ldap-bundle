@@ -1,0 +1,31 @@
+{
+    "name": "alep/ldap-bundle",
+    "type": "pimcore-bundle",
+    "description": "Ldap bundle for Pimcore",
+    "keywords": [
+      "alep",
+      "alexpozzi"
+      "pimcore",
+      "ldap"
+    ],
+    "license": "GPL-3.0-or-later",
+    "authors": [
+      {
+        "name": "Alessandro Pozzi",
+        "email": "alexpozzi87@gmail.com",
+        "role": "Developer"
+      }
+    ],
+    "require": {
+      "php": ">=7.0",
+      "ext-ldap": "*",
+      "symfony/symfony": ">=3.4.3",
+      "symfony/ldap": ">=3.4.3",
+      "pimcore/core-version": ">=5.1.0"
+    },
+    "autoload": {
+        "psr-0" : {
+            "Alep\\LdapBundle" : "src"
+        }
+    }
+}
