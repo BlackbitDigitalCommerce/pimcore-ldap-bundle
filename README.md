@@ -3,6 +3,12 @@ Enables LDAP authentication to the Pimcore's admin UI.
 
 If a user already exists in Pimcore (and is not in the list of the excluded users) it will be automatically updated with the informations coming from LDAP. If not a new user will be created automatically.
 
+
+## Requirements
+
+Pimcore >= 5.1.0
+
+
 ## Installation
 
 1) Install the bundle using composer `composer require alep/ldap-bundle dev-master`.
