@@ -31,10 +31,21 @@ class DefaultLdapUserMapper implements LdapUserMapperInterface
     public static function mapDataToUser(User $user, $username, $password, Entry $ldap_user)
     {
         $user->setUsername($username);
+
         $user->setPassword(self::encodePassword($username, $password));
-        $user->setFirstname($ldap_user->getAttribute('givenName')[0]);
-        $user->setLastname($ldap_user->getAttribute('sn')[0]);
-        $user->setEmail($ldap_user->getAttribute('mail')[0]);
+
+        $ldap_givenName = $ldap_user->getAttribute('givenName');
+        $firstname = (is_array($ldap_givenName)) ? implode(', ', $ldap_givenName) : (string) $ldap_givenName;
+        $user->setFirstname($firstname);
+
+        $ldap_sn = $ldap_user->getAttribute('sn');
+        $lastname = (is_array($ldap_sn)) ? implode(', ', $ldap_sn) : (string) $ldap_sn;
+        $user->setLastname($lastname);
+
+        $ldap_mail = $ldap_user->getAttribute('mail');
+        $email = (is_array($ldap_mail)) ? implode(', ', $ldap_mail) : (string) $ldap_mail;
+        $user->setEmail($email);
+
         $user->setActive(true);
     }
 
