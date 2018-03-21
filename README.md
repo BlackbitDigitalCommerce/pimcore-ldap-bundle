@@ -11,7 +11,7 @@ Pimcore >= 5.1.0
 
 ## Installation
 
-1) Install the bundle using composer `composer require alep/ldap-bundle dev-master`.
+1) Install the bundle using composer `composer require alep/ldap-bundle`.
 2) Open Pimcore Admin UI, navigate to `Tools` > `Extensions` and activate the bundle.
 
 
