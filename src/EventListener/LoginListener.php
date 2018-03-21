@@ -79,10 +79,10 @@ class LoginListener
      * @param string[] $default_roles
      * @param string $uid_key
      * @param string $filter
-     * @param string[] $exclude
+     * @param array $exclude_rules
      * @param LdapUserMapperInterface $mapper
      */
-    public function __construct(Ldap $ldap, $base_dn, $search_dn, $search_password, $default_roles, $uid_key, $filter, $exclude, LdapUserMapperInterface $mapper)
+    public function __construct(Ldap $ldap, $base_dn, $search_dn, $search_password, $default_roles, $uid_key, $filter, $exclude_rules, LdapUserMapperInterface $mapper)
     {
         $this->ldap = $ldap;
         $this->base_dn = $base_dn;
@@ -91,7 +91,7 @@ class LoginListener
         $this->default_roles = (is_array($default_roles)) ? $default_roles : array();
         $this->uid_key = $uid_key;
         $this->filter = str_replace('{uid_key}', $uid_key, $filter);
-        $this->exclude = (is_array($exclude)) ? $exclude : array();
+        $this->exclude_rules = (is_array($exclude_rules)) ? $exclude_rules : array();
         $this->mapper = $mapper;
 
         $this->ldap->bind($search_dn, $search_password);
@@ -108,7 +108,7 @@ class LoginListener
         $password = $credentials['password'];
 
         //Check if this user has to be excluded
-        if(in_array($username, $this->exclude)) return;
+        if($this->isExcluded($username)) return;
 
         //Authenticate via ldap
         $ldap_user = $this->authenticate($username, $password);
@@ -127,7 +127,7 @@ class LoginListener
         $password = $event->getCredential('password');
 
         //Check if this user has to be excluded
-        if(in_array($username, $this->exclude)) return;
+        if($this->isExcluded($username)) return;
 
         //authenticate via ldap
         $ldap_user = $this->authenticate($username, $password);
@@ -137,6 +137,67 @@ class LoginListener
 
         //Update session
         $event->setUser($pimcore_user);
+    }
+
+    /**
+     * @param string $username
+     * @return bool
+     */
+    private function isExcluded($username) {
+
+        //Check users excluding rules
+        if(isset($this->exclude_rules['users'])) {
+            foreach ($this->exclude_rules['users'] as $userExcludeRule) {
+                if (@preg_match($userExcludeRule, null) !== false) { //Check as regex (@ sign in front of the regex function is to prevent warnings on the valid regex test)
+                    if (preg_match($userExcludeRule, $username)) {
+                        return true;
+                    }
+                } elseif ($username == $userExcludeRule) { //Check as string
+                    return true;
+                }
+            }
+        }
+
+        //Check roles excluding rules
+        if(isset($this->exclude_rules['roles'])) {
+            $roles = $this->getUserRoleNames($username);
+            if(!empty($roles)) {
+                foreach ($this->exclude_rules['roles'] as $roleExcludeRule) {
+                    if (@preg_match($roleExcludeRule, null) !== false) { //Check as regex (@ sign in front of the regex function is to prevent warnings on the valid regex test)
+                        if (preg_grep($roleExcludeRule, $roles)) {
+                            return true;
+                        }
+                    } elseif (in_array($roleExcludeRule, $roles)) { //Check as string
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $username
+     * @return string[]
+     */
+    private function getUserRoleNames($username) {
+        $roles = array();
+
+        //Get user
+        $user = User::getByName($username);
+        if($user instanceof User) {
+            //If the user is an admin add the role ROLE_PIMCORE_ADMIN automatically
+            if($user->isAdmin()) $roles[] = 'ROLE_PIMCORE_ADMIN';
+
+            //Get user's roles
+            foreach($user->getRoles() as $roleId) {
+                $role = User\Role::getById($roleId);
+                $roles[] = $role->getName();
+            }
+        }
+
+        return $roles;
     }
 
     /**
@@ -231,6 +292,9 @@ class LoginListener
         }
     }
 
+    /**
+     * @return interger[]
+     */
     private function getDefaultRolesIds() {
         $default_roles_ids = array();
 

@@ -7,5 +7,5 @@ alep_ldap:
     default_roles: ~
     uid_key: 'sAMAccountName'
     filter: '({uid_key}={username})'
-    exclude: ~
+    exclude_rules: ~
     mapper: 'Alep\LdapBundle\DataMapper\DefaultLdapUserMapper'

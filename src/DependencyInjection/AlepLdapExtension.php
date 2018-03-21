@@ -41,6 +41,22 @@ class AlepLdapExtension extends Extension
         if(!$config['enabled']) {
             $container->removeDefinition('Alep\LdapBundle\EventListener\LoginListener');
         } else {
+
+            //Support for deprecated exclude configuration
+            if(isset($config['exclude']) && is_array($config['exclude']) && !empty($config['exclude'])) {
+                if(isset($config['exclude_rules']) && is_array($config['exclude_rules'])) {
+                    if(isset($config['exclude_rules']['users']) && is_array($config['exclude_rules']['users'])) {
+                        $config['exclude_rules']['users'] = array_merge($config['exclude_rules']['users'], $config['exclude']);
+                    } else {
+                        $config['exclude_rules']['users'] = $config['exclude'];
+                    }
+                } else {
+                    $config['exclude_rules'] = array(
+                      'users' => $config['exclude']
+                    );
+                }
+            }
+
             $loginListenerDefinition = $container->getDefinition('Alep\LdapBundle\EventListener\LoginListener');
             $loginListenerDefinition->setArguments(array(
                 new Reference($config['service']),
@@ -50,7 +66,7 @@ class AlepLdapExtension extends Extension
                 $config['default_roles'],
                 $config['uid_key'],
                 $config['filter'],
-                $config['exclude'],
+                $config['exclude_rules'],
                 new Reference($config['mapper'])
             ));
         }
