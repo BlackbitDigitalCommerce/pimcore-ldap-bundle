@@ -50,6 +50,22 @@ Pimcore >= 5.1.0
 * **search_password**: Read-only user's password, which will be used to authenticate against the LDAP server in order to fetch the user's information (example: `your_search_dn_user_password`).
 * **uid_key**: Entry's key to use as its UID. Depends on your LDAP server implementation (required, default: `sAMAccountName`).
 * **filter**: It lets you configure which LDAP query will be used. The {uid_key} string will be replaced by the value of the uid_key configuration value (by default, sAMAccountName), and the {username} string will be replaced by the username you are trying to load (required, default: `({uid_key}={username})`).
-* **exclude**: List of Pimcore's usernames to exclude from LDAP authentication (example: `['admin']`).
+* **exclude**: [DEPRECATED] List of Pimcore's usernames to exclude from LDAP authentication (example: `['admin']`). If already configured the values will be merged to `exclude_rules.users` configuration.
+* **exclude_rules**: List of rules which determine if a user has to be excluded from LDAP authentication (it supports regular expressions, see below).
+    * **users**: List of usernames or regular expressions matching usernames to exclude from LDAP authentication (example: `['admin', '/^noldap.*/i']` to exclude the user admin and all users with a username starting with `noldap` like `noldap_alep`).
+    * **roles**: List of roles or regular expressions matching role names to exclude from LDAP authentication (example: `['ROLE_PIMCORE_ADMIN', '/^ROLE_NOLDAP.*/i']` to exclude the user's with `ROLE_PIMCORE_ADMIN` assigned and all users with a role starting with `ROLE_NOLDAP` like `ROLE_NOLDAP_USERS`).
 * **default_roles**: List of Pimcore's roles you wish to give to a user fetched from the LDAP server. If you do not configure this key, your users won't have any roles, and will not be considered as authenticated fully (example: `['ROLE_USER']`). All the roles needs to be already configured in Pimcore.
-* **mapper**: Data mapper service used to map ldap user data to Pimcore user (required, default: `Alep\LdapBundle\DataMapper\DefaultLdapUserMapper`).
+* **mapper**: Data mapper service used to map ldap user data to Pimcore user (required, default: `Alep\LdapBundle\DataMapper\DefaultLdapUserMapper`). See [link to Custom data mapper](#custom-data-mapper) to build your own data mapper.
+
+
+
+### Custom data mapper
+
+To build your own custom data mapper you just have to create a class which implements the [link to LdapUserMapperInterface](https://github.com/alexpozzi/pimcore-ldap-bundle/blob/master/src/DataMapper/LdapUserMapperInterface.php).
+You can use [link to DefaultLdapUserMapper](https://github.com/alexpozzi/pimcore-ldap-bundle/blob/master/src/DataMapper/DefaultLdapUserMapper.php) as an example. 
+The [link to DefaultLdapUserMapper](https://github.com/alexpozzi/pimcore-ldap-bundle/blob/master/src/DataMapper/DefaultLdapUserMapper.php) is the default data mapper used by the bundle and it maps the following ldap attributes to the Pimcore user:
+* username -> Username
+* password -> Password (encoded using Pimcore's internal functions)
+* givenName -> Firstname
+* sn -> Lastname
+* mail -> Email
