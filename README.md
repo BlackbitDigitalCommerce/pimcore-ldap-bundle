@@ -61,9 +61,9 @@ Pimcore >= 5.1.0
 
 ### Custom data mapper
 
-To build your own custom data mapper you just have to create a class which implements the [link to LdapUserMapperInterface](https://github.com/alexpozzi/pimcore-ldap-bundle/blob/master/src/DataMapper/LdapUserMapperInterface.php).
-You can use [link to DefaultLdapUserMapper](https://github.com/alexpozzi/pimcore-ldap-bundle/blob/master/src/DataMapper/DefaultLdapUserMapper.php) as an example. 
-The [link to DefaultLdapUserMapper](https://github.com/alexpozzi/pimcore-ldap-bundle/blob/master/src/DataMapper/DefaultLdapUserMapper.php) is the default data mapper used by the bundle and it maps the following ldap attributes to the Pimcore user:
+To build your own custom data mapper you just have to create a class which implements the [LdapUserMapperInterface](https://github.com/alexpozzi/pimcore-ldap-bundle/blob/master/src/DataMapper/LdapUserMapperInterface.php).
+You can use [DefaultLdapUserMapper](https://github.com/alexpozzi/pimcore-ldap-bundle/blob/master/src/DataMapper/DefaultLdapUserMapper.php) as an example. 
+The [DefaultLdapUserMapper](https://github.com/alexpozzi/pimcore-ldap-bundle/blob/master/src/DataMapper/DefaultLdapUserMapper.php) is the default data mapper used by the bundle and it maps the following ldap attributes to the Pimcore user:
 * username -> Username
 * password -> Password (encoded using Pimcore's internal functions)
 * givenName -> Firstname
