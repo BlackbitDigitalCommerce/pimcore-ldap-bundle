@@ -55,7 +55,7 @@ Pimcore >= 5.1.0
     * **users**: List of usernames or regular expressions matching usernames to exclude from LDAP authentication (example: `['admin', '/^noldap.*/i']` to exclude the user `admin` and all users with a username starting with `noldap` like `noldap_alep`).
     * **roles**: List of roles or regular expressions matching role names to exclude from LDAP authentication (example: `['ROLE_PIMCORE_ADMIN', '/^ROLE_NOLDAP.*/i']` to exclude the users with `ROLE_PIMCORE_ADMIN` assigned and all users with a role starting with `ROLE_NOLDAP` like `ROLE_NOLDAP_USERS`).
 * **default_roles**: List of Pimcore's roles you wish to give to a user fetched from the LDAP server. If you do not configure this key, your users won't have any roles, and will not be considered as authenticated fully (example: `['ROLE_USER']`). All the roles needs to be already configured in Pimcore.
-* **mapper**: Data mapper service used to map ldap user data to Pimcore user (required, default: `Alep\LdapBundle\DataMapper\DefaultLdapUserMapper`). See [link to Custom data mapper](#custom-data-mapper) to build your own data mapper.
+* **mapper**: Data mapper service used to map ldap user data to Pimcore user (required, default: `Alep\LdapBundle\DataMapper\DefaultLdapUserMapper`). See [Custom data mapper](#custom-data-mapper) to build your own data mapper.
 
 
 
