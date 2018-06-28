@@ -158,6 +158,32 @@ class LoginListener
             }
         }
 
+        //check user excluding paths
+        if(isset($this->exclude_rules['user_paths'])) {
+            $user = User::getByName($username);
+            if($user instanceof User){
+                $tmp = $user;
+                $pathParts = [];
+                while ($tmp->getParentId()){
+                    $folder = User\Folder::getById($tmp->getParentId());
+                    $pathParts[] = $folder->getName();
+                    $tmp = $folder;
+                }
+                $folderPath = '/'.implode('/',array_reverse($pathParts));
+
+                foreach ($this->exclude_rules['user_paths'] as $userExcludePath) {
+
+                    if (@preg_match($userExcludePath, null) !== false) { //Check as regex (@ sign in front of the regex function is to prevent warnings on the valid regex test)
+                        if (preg_match($userExcludePath, $folderPath)) {
+                            return true;
+                        }
+                    } elseif($userExcludePath == $folderPath){
+                        return true;
+                    }
+                }
+            }
+        }
+
         //Check roles excluding rules
         if(isset($this->exclude_rules['roles'])) {
             $roles = $this->getUserRoleNames($username);

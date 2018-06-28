@@ -80,6 +80,7 @@ class Configuration implements ConfigurationInterface
                     ->info('This is a list of usernames/roles to exclude from LDAP authentication (supports regular expressions).')
                     ->children()
                         ->arrayNode('users')->scalarPrototype()->end()->end()
+                        ->arrayNode('user_paths')->scalarPrototype()->end()->end()
                         ->arrayNode('roles')->scalarPrototype()->end()->end()
                     ->end()
                 ->end()
