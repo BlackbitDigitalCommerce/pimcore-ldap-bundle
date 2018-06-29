@@ -147,39 +147,27 @@ class LoginListener
 
         //Check users excluding rules
         if(isset($this->exclude_rules['users'])) {
-            foreach ($this->exclude_rules['users'] as $userExcludeRule) {
-                if (@preg_match($userExcludeRule, null) !== false) { //Check as regex (@ sign in front of the regex function is to prevent warnings on the valid regex test)
-                    if (preg_match($userExcludeRule, $username)) {
-                        return true;
-                    }
-                } elseif ($username == $userExcludeRule) { //Check as string
-                    return true;
-                }
-            }
-        }
 
-        //check user excluding paths
-        if(isset($this->exclude_rules['user_paths'])) {
             $user = User::getByName($username);
-            if($user instanceof User){
+            $userFullPath = '';
+            if($user instanceof User) {
                 $tmp = $user;
                 $pathParts = [];
-                while ($tmp->getParentId()){
+                while ($tmp->getParentId()) {
                     $folder = User\Folder::getById($tmp->getParentId());
                     $pathParts[] = $folder->getName();
                     $tmp = $folder;
                 }
-                $folderPath = '/'.implode('/',array_reverse($pathParts));
+                $userFullPath = '/' . implode('/', array_reverse($pathParts)) . '/' . $username;
+            }
 
-                foreach ($this->exclude_rules['user_paths'] as $userExcludePath) {
-
-                    if (@preg_match($userExcludePath, null) !== false) { //Check as regex (@ sign in front of the regex function is to prevent warnings on the valid regex test)
-                        if (preg_match($userExcludePath, $folderPath)) {
-                            return true;
-                        }
-                    } elseif($userExcludePath == $folderPath){
+            foreach ($this->exclude_rules['users'] as $userExcludeRule) {
+                if (@preg_match($userExcludeRule, null) !== false) { //Check as regex (@ sign in front of the regex function is to prevent warnings on the valid regex test)
+                    if (preg_match($userExcludeRule, $username)  || preg_match($userExcludeRule, $userFullPath)) {
                         return true;
                     }
+                } elseif ($username == $userExcludeRule) { //Check as string
+                    return true;
                 }
             }
         }
