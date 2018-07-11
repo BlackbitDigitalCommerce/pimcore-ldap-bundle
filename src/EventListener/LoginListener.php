@@ -147,9 +147,23 @@ class LoginListener
 
         //Check users excluding rules
         if(isset($this->exclude_rules['users'])) {
+
+            $user = User::getByName($username);
+            $userFullPath = '';
+            if($user instanceof User) {
+                $tmp = $user;
+                $pathParts = [];
+                while ($tmp->getParentId()) {
+                    $folder = User\Folder::getById($tmp->getParentId());
+                    $pathParts[] = $folder->getName();
+                    $tmp = $folder;
+                }
+                $userFullPath = '/' . implode('/', array_reverse($pathParts)) . '/' . $username;
+            }
+
             foreach ($this->exclude_rules['users'] as $userExcludeRule) {
                 if (@preg_match($userExcludeRule, null) !== false) { //Check as regex (@ sign in front of the regex function is to prevent warnings on the valid regex test)
-                    if (preg_match($userExcludeRule, $username)) {
+                    if (preg_match($userExcludeRule, $username)  || preg_match($userExcludeRule, $userFullPath)) {
                         return true;
                     }
                 } elseif ($username == $userExcludeRule) { //Check as string
