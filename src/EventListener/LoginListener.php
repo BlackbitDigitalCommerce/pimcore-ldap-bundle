@@ -104,6 +104,11 @@ class LoginListener
     {
         //Get credentials from the login event
         $credentials = $event->getCredentials();
+        
+        if(isset($credentials['token'])) {
+            return;
+        }
+        
         $username = $credentials['username'];
         $password = $credentials['password'];
 
