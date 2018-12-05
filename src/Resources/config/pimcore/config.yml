@@ -9,3 +9,4 @@ alep_ldap:
     filter: '({uid_key}={username})'
     exclude_rules: ~
     mapper: 'Alep\LdapBundle\DataMapper\DefaultLdapUserMapper'
+    logger: ~

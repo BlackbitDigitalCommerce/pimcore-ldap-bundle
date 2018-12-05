@@ -26,24 +26,24 @@ class DefaultLdapUserMapper implements LdapUserMapperInterface
      * @param User $user
      * @param $username
      * @param $password
-     * @param Entry $ldap_user
+     * @param Entry $ldapUser
      */
-    public static function mapDataToUser(User $user, $username, $password, Entry $ldap_user)
+    public static function mapDataToUser(User $user, $username, $password, Entry $ldapUser)
     {
         $user->setUsername($username);
 
         $user->setPassword(self::encodePassword($username, $password));
 
-        $ldap_givenName = $ldap_user->getAttribute('givenName');
-        $firstname = (is_array($ldap_givenName)) ? implode(', ', $ldap_givenName) : (string) $ldap_givenName;
-        $user->setFirstname($firstname);
+        $ldapGivenName = $ldapUser->getAttribute('givenName');
+        $firstName = (is_array($ldapGivenName)) ? implode(', ', $ldapGivenName) : (string) $ldapGivenName;
+        $user->setFirstname($firstName);
 
-        $ldap_sn = $ldap_user->getAttribute('sn');
-        $lastname = (is_array($ldap_sn)) ? implode(', ', $ldap_sn) : (string) $ldap_sn;
-        $user->setLastname($lastname);
+        $ldapSn = $ldapUser->getAttribute('sn');
+        $lastName = (is_array($ldapSn)) ? implode(', ', $ldapSn) : (string) $ldapSn;
+        $user->setLastname($lastName);
 
-        $ldap_mail = $ldap_user->getAttribute('mail');
-        $email = (is_array($ldap_mail)) ? implode(', ', $ldap_mail) : (string) $ldap_mail;
+        $ldapMail = $ldapUser->getAttribute('mail');
+        $email = (is_array($ldapMail)) ? implode(', ', $ldapMail) : (string) $ldapMail;
         $user->setEmail($email);
 
         $user->setActive(true);
@@ -59,7 +59,7 @@ class DefaultLdapUserMapper implements LdapUserMapperInterface
         try {
             return Authentication::getPasswordHash($username, $password);
         } catch (\Exception $exception) {
-            throw new BadCredentialsException('Unable to create password hash for user: ' . $username);
+            throw new BadCredentialsException(sprintf('Unable to create password hash for user: %s', $username));
         }
     }
 }

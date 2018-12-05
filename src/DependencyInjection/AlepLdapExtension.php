@@ -40,6 +40,7 @@ class AlepLdapExtension extends Extension
 
         if(!$config['enabled']) {
             $container->removeDefinition('Alep\LdapBundle\EventListener\LoginListener');
+            $container->removeDefinition('Alep\LdapBundle\Service\Ldap');
         } else {
 
             //Support for deprecated exclude configuration
@@ -57,8 +58,9 @@ class AlepLdapExtension extends Extension
                 }
             }
 
-            $loginListenerDefinition = $container->getDefinition('Alep\LdapBundle\EventListener\LoginListener');
-            $loginListenerDefinition->setArguments(array(
+            $loginListenerDefinition = $container->getDefinition('Alep\LdapBundle\Service\Ldap');
+
+            $arguments = array(
                 new Reference($config['service']),
                 $config['base_dn'],
                 $config['search_dn'],
@@ -68,7 +70,14 @@ class AlepLdapExtension extends Extension
                 $config['filter'],
                 $config['exclude_rules'],
                 new Reference($config['mapper'])
-            ));
+            );
+
+            //Add logger service if specified
+            if(!empty($config['logger'])) {
+                $arguments[] = new Reference($config['logger']);
+            }
+
+            $loginListenerDefinition->setArguments($arguments);
         }
     }
 }

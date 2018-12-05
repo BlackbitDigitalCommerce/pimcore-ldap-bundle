@@ -21,7 +21,7 @@
       "ext-ldap": "*",
       "symfony/symfony": ">=3.4.3",
       "symfony/ldap": ">=3.4.3",
-      "pimcore/core-version": ">=5.1.0"
+      "pimcore/pimcore": ">=5.1.0"
     },
     "autoload": {
         "psr-0" : {

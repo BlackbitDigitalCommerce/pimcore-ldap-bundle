@@ -11,8 +11,13 @@ services:
 
     Alep\LdapBundle\DataMapper\DefaultLdapUserMapper:
 
+    Alep\LdapBundle\Service\Ldap:
+        tags:
+            - { name: monolog.logger, channel: alep.ldap }
+
     Alep\LdapBundle\EventListener\LoginListener:
           tags:
               - { name: kernel.event_listener, event: pimcore.admin.login.failed, method: onAdminLoginFailed }
               - { name: kernel.event_listener, event: pimcore.admin.login.credentials, method: onAdminLoginCredentials }
-          arguments: []
+          arguments:
+              - '@Alep\LdapBundle\Service\Ldap'

@@ -88,6 +88,9 @@ class Configuration implements ConfigurationInterface
                     ->cannotBeEmpty()
                     ->defaultValue('Alep\LdapBundle\DataMapper\DefaultLdapUserMapper')
                 ->end()
+                ->scalarNode('logger')
+                    ->info('This is the logger service used by the bundle.')
+                ->end()
             ->end()
         ;
 
