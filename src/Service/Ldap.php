@@ -308,9 +308,11 @@ class Ldap
             $this->mapper::mapDataToUser($user, $username, $password, $ldapUser);
 
             //Add default roles
-            $user->setRoles(array_merge(
-                $user->getRoles(),
-                $this->getDefaultRolesIds()
+            $user->setRoles(array_unique(
+                array_merge(
+                    $user->getRoles(),
+                    $this->getDefaultRolesIds()
+                )
             ));
 
             $user->save();
