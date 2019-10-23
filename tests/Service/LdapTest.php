@@ -234,5 +234,4 @@ class LdapTest extends TestCase
             array('test_username', 'test_firstname', 'test_surname', 'test_email@email.test', array(1), array(2)),
         );
     }
-
 }

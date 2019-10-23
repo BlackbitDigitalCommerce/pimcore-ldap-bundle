@@ -18,5 +18,4 @@ use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 
 class AlepLdapBundle extends AbstractPimcoreBundle
 {
-
 }

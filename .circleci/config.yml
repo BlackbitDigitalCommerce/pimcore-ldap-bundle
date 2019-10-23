@@ -28,5 +28,8 @@ jobs:
           paths:
             - ./vendor
 
+      # lint files
+      - run: ./vendor/bin/php-cs-fixer fix --dry-run --diff --verbose
+
       # run tests with phpunit
       - run: ./vendor/bin/phpunit tests -v

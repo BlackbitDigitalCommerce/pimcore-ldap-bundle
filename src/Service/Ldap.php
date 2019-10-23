@@ -111,14 +111,13 @@ class Ldap
      * @param string $username
      * @return bool
      */
-    public function isUserExcluded($username) {
-
+    public function isUserExcluded($username)
+    {
         //Check users excluding rules
-        if(isset($this->excludeRules['users'])) {
-
+        if (isset($this->excludeRules['users'])) {
             $user = $this->getPimcoreUserByUsername($username);
             $userFullPath = '';
-            if($user instanceof User) {
+            if ($user instanceof User) {
                 $tmp = $user;
                 $pathParts = [];
                 while ($tmp->getParentId()) {
@@ -143,9 +142,9 @@ class Ldap
         }
 
         //Check roles excluding rules
-        if(isset($this->excludeRules['roles'])) {
+        if (isset($this->excludeRules['roles'])) {
             $roles = $this->getUserRoleNames($username);
-            if(!empty($roles)) {
+            if (!empty($roles)) {
                 foreach ($this->excludeRules['roles'] as $roleExcludeRule) {
                     if (@preg_match($roleExcludeRule, null) !== false) { //Check as regex (@ sign in front of the regex function is to prevent warnings on the valid regex test)
                         if (preg_grep($roleExcludeRule, $roles)) {
@@ -167,17 +166,20 @@ class Ldap
      * @param string $username
      * @return string[]
      */
-    protected function getUserRoleNames($username) {
+    protected function getUserRoleNames($username)
+    {
         $roles = array();
 
         //Get user
         $user = $this->getPimcoreUserByUsername($username);
-        if($user instanceof User) {
+        if ($user instanceof User) {
             //If the user is an admin add the role ROLE_PIMCORE_ADMIN automatically
-            if($user->isAdmin()) $roles[] = 'ROLE_PIMCORE_ADMIN';
+            if ($user->isAdmin()) {
+                $roles[] = 'ROLE_PIMCORE_ADMIN';
+            }
 
             //Get user's roles
-            foreach($user->getRoles() as $roleId) {
+            foreach ($user->getRoles() as $roleId) {
                 $role = $this->getPimcoreUserRoleById($roleId);
                 $roles[] = $role->getName();
             }
@@ -191,9 +193,10 @@ class Ldap
      * @param string $password
      * @return Entry
      */
-    public function authenticate($username, $password) {
+    public function authenticate($username, $password)
+    {
         //Check if credentials are valid
-        if(empty($password)) {
+        if (empty($password)) {
             $this->logger->error(sprintf("Login failed for user '%s'. The presented password is not valid.", $username));
             throw new BadCredentialsException('The presented password is not valid.');
         }
@@ -201,7 +204,7 @@ class Ldap
         //Get user from ldap
         $ldapUser = $this->getLdapUser($username);
 
-        if(!($ldapUser instanceof Entry)) {
+        if (!($ldapUser instanceof Entry)) {
             $this->logger->error(sprintf("Login failed for user '%s'. The presented username is not valid.", $username));
             throw new BadCredentialsException('The presented username is not valid.');
         }
@@ -299,7 +302,7 @@ class Ldap
             $user = $this->getPimcoreUserByUsername($username);
 
             //If Pimcore user doesn't exists create a new one
-            if(!($user instanceof User)) {
+            if (!($user instanceof User)) {
                 $user = new User();
                 $user->setParentId(0);
             }
@@ -318,7 +321,7 @@ class Ldap
             $user->save();
 
             return $user;
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             echo $exception->getMessage();
             $this->logger->error(sprintf('Unable to update Pimcore user %s', $username));
             throw new BadCredentialsException(sprintf('Unable to update Pimcore user %s', $username));
@@ -328,12 +331,13 @@ class Ldap
     /**
      * @return array
      */
-    protected function getDefaultRolesIds() {
+    protected function getDefaultRolesIds()
+    {
         $defaultRolesIds = array();
 
-        foreach($this->defaultRoles as $default_role) {
+        foreach ($this->defaultRoles as $default_role) {
             $pimcoreRole = $this->getPimcoreUserRoleByName($default_role);
-            if($pimcoreRole) {
+            if ($pimcoreRole) {
                 $defaultRolesIds[] = $pimcoreRole->getId();
             }
         }

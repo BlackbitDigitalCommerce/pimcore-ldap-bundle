@@ -38,15 +38,15 @@ class AlepLdapExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        if(!$config['enabled']) {
+        if (!$config['enabled']) {
             $container->removeDefinition('Alep\LdapBundle\EventListener\LoginListener');
             $container->removeDefinition('Alep\LdapBundle\Service\Ldap');
         } else {
 
             //Support for deprecated exclude configuration
-            if(isset($config['exclude']) && is_array($config['exclude']) && !empty($config['exclude'])) {
-                if(isset($config['exclude_rules']) && is_array($config['exclude_rules'])) {
-                    if(isset($config['exclude_rules']['users']) && is_array($config['exclude_rules']['users'])) {
+            if (isset($config['exclude']) && is_array($config['exclude']) && !empty($config['exclude'])) {
+                if (isset($config['exclude_rules']) && is_array($config['exclude_rules'])) {
+                    if (isset($config['exclude_rules']['users']) && is_array($config['exclude_rules']['users'])) {
                         $config['exclude_rules']['users'] = array_merge($config['exclude_rules']['users'], $config['exclude']);
                     } else {
                         $config['exclude_rules']['users'] = $config['exclude'];
@@ -73,7 +73,7 @@ class AlepLdapExtension extends Extension
             );
 
             //Add logger service if specified
-            if(!empty($config['logger'])) {
+            if (!empty($config['logger'])) {
                 $arguments[] = new Reference($config['logger']);
             }
 

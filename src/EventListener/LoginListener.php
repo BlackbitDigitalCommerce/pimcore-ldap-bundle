@@ -43,15 +43,15 @@ class LoginListener
         $credentials = $event->getCredentials();
 
         //If authentication via token skip the LDAP authentication
-        if(isset($credentials['token'])) {
+        if (isset($credentials['token'])) {
             return;
         }
 
         $username = $credentials['username'];
         $password = $credentials['password'];
-        
+
         //Check if this user has to be excluded
-        if($this->ldap->isUserExcluded($username)) {
+        if ($this->ldap->isUserExcluded($username)) {
             return;
         }
 
@@ -72,7 +72,7 @@ class LoginListener
         $password = $event->getCredential('password');
 
         //Check if this user has to be excluded
-        if($this->ldap->isUserExcluded($username)) {
+        if ($this->ldap->isUserExcluded($username)) {
             return;
         }
 

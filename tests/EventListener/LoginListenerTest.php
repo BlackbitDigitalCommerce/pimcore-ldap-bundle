@@ -8,7 +8,6 @@
 
 namespace Alep\LdapBundle\tests\EventListener;
 
-
 use Alep\LdapBundle\EventListener\LoginListener;
 use Alep\LdapBundle\Service\Ldap;
 use PHPUnit\Framework\TestCase;
@@ -146,5 +145,4 @@ class LoginListenerTest extends TestCase
 
         $this->loginListener->onAdminLoginFailed($mockLoginFailedEvent);
     }
-
 }
