@@ -8,7 +8,6 @@
 
 namespace Alep\LdapBundle\tests\DataMapper;
 
-
 use Alep\LdapBundle\DataMapper\DefaultLdapUserMapper;
 use PHPUnit\Framework\TestCase;
 use Pimcore\Model\User;
@@ -58,5 +57,4 @@ class DefaultLdapUserMapperTest extends TestCase
             )
         );
     }
-
 }

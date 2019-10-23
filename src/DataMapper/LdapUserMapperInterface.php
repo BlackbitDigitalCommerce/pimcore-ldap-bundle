@@ -17,7 +17,6 @@ namespace Alep\LdapBundle\DataMapper;
 use Pimcore\Model\User;
 use Symfony\Component\Ldap\Entry;
 
-
 interface LdapUserMapperInterface
 {
 
