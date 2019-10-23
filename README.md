@@ -1,3 +1,9 @@
+[![CircleCI](https://circleci.com/gh/alexpozzi/pimcore-ldap-bundle.svg?style=svg)](https://circleci.com/gh/alexpozzi/pimcore-ldap-bundle)
+[![License](https://poser.pugx.org/alep/ldap-bundle/license)](https://packagist.org/packages/alep/ldap-bundle)
+[![Total Downloads](https://poser.pugx.org/alep/ldap-bundle/downloads)](https://packagist.org/packages/alep/ldap-bundle)
+[![Latest Stable Version](https://poser.pugx.org/alep/ldap-bundle/v/stable)](https://packagist.org/packages/alep/ldap-bundle)
+[![Latest Unstable Version](https://poser.pugx.org/alep/ldap-bundle/v/unstable)](https://packagist.org/packages/alep/ldap-bundle)
+
 # LDAP bundle for Pimcore
 Enables LDAP authentication to the Pimcore's admin UI.
 
@@ -63,7 +69,7 @@ Pimcore >= 5.1.0
 ### Custom data mapper
 
 To build your own custom data mapper you just have to create a class which implements the [LdapUserMapperInterface](https://github.com/alexpozzi/pimcore-ldap-bundle/blob/master/src/DataMapper/LdapUserMapperInterface.php).
-You can use [DefaultLdapUserMapper](https://github.com/alexpozzi/pimcore-ldap-bundle/blob/master/src/DataMapper/DefaultLdapUserMapper.php) as an example. 
+You can use [DefaultLdapUserMapper](https://github.com/alexpozzi/pimcore-ldap-bundle/blob/master/src/DataMapper/DefaultLdapUserMapper.php) as an example.
 The [DefaultLdapUserMapper](https://github.com/alexpozzi/pimcore-ldap-bundle/blob/master/src/DataMapper/DefaultLdapUserMapper.php) is the default data mapper used by the bundle and it maps the following ldap attributes to the Pimcore user:
 * username -> Username
 * password -> Password (encoded using Pimcore's internal functions)
