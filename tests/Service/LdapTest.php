@@ -72,6 +72,37 @@ class LdapTest extends TestCase
         $this->assertSame($expectedResult, $result);
     }
 
+    public function testIsUserExcludedByUsernameWithNegativeRegex() {
+        $this->ldap = $this->getMockBuilder(Ldap::class)
+            ->setConstructorArgs(array(
+                $this->symfonyLdap,
+                'dc=example,dc=com',
+                '',
+                '',
+                '',
+                'sAMAccountName',
+                '({uid_key}={username})',
+                array(
+                    'users' => ['admin', '/^((?!example\.org).)*$/i']
+                ),
+                new DefaultLdapUserMapper(),
+                $this->createMock(LoggerInterface::class)
+            ))
+            ->setMethods(array(
+                'getLdapUser',
+                'getUserRoleNames',
+                'getPimcoreUserByUsername',
+                'getPimcoreUserFolderById',
+                'getPimcoreUserRoleById',
+                'getPimcoreUserRoleByName',
+                'getDefaultRolesIds',
+            ))
+            ->getMock();
+
+        $this->assertTrue($this->ldap->isUserExcluded('test'));
+        $this->assertFalse($this->ldap->isUserExcluded('test@example.org'));
+    }
+
     public function providerIsUserExcludedByUser()
     {
         return array(
