@@ -72,6 +72,17 @@ class LdapTest extends TestCase
         $this->assertSame($expectedResult, $result);
     }
 
+    public function providerIsUserExcludedByUser()
+    {
+        return array(
+            array('admin', true),
+            array('noldap_test', true),
+            array('administrator', false),
+            array('test_username', false),
+            array('test_noldap', false),
+        );
+    }
+
     public function testIsUserExcludedByUsernameWithNegativeRegex() {
         $this->ldap = $this->getMockBuilder(Ldap::class)
             ->setConstructorArgs(array(
@@ -101,17 +112,6 @@ class LdapTest extends TestCase
 
         $this->assertTrue($this->ldap->isUserExcluded('test'));
         $this->assertFalse($this->ldap->isUserExcluded('test@example.org'));
-    }
-
-    public function providerIsUserExcludedByUser()
-    {
-        return array(
-            array('admin', true),
-            array('noldap_test', true),
-            array('administrator', false),
-            array('test_username', false),
-            array('test_noldap', false),
-        );
     }
 
     /**
