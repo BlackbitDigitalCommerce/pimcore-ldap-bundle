@@ -130,7 +130,7 @@ class Ldap
 
             foreach ($this->excludeRules['users'] as $userExcludeRule) {
                 if (@preg_match($userExcludeRule, null) !== false) { //Check as regex (@ sign in front of the regex function is to prevent warnings on the valid regex test)
-                    if (preg_match($userExcludeRule, $username)  || preg_match($userExcludeRule, $userFullPath)) {
+                    if (preg_match($userExcludeRule, $username)  || ($userFullPath && preg_match($userExcludeRule, $userFullPath))) {
                         $this->logger->debug(sprintf("User '%s' excluded by the exclude by user rule '%s'", $username, $userExcludeRule));
                         return true;
                     }
