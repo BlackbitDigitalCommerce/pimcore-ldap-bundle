@@ -4,6 +4,8 @@
 [![Latest Stable Version](https://poser.pugx.org/alep/ldap-bundle/v/stable)](https://packagist.org/packages/alep/ldap-bundle)
 [![Latest Unstable Version](https://poser.pugx.org/alep/ldap-bundle/v/unstable)](https://packagist.org/packages/alep/ldap-bundle)
 
+:warning: Please read [this](https://github.com/alexpozzi/pimcore-ldap-bundle/issues/13)!
+
 # LDAP bundle for Pimcore
 Enables LDAP authentication to the Pimcore's admin UI.
 
