@@ -83,7 +83,8 @@ class LdapTest extends TestCase
         );
     }
 
-    public function testIsUserExcludedByUsernameWithNegativeRegex() {
+    public function testIsUserExcludedByUsernameWithNegativeRegex() 
+    {
         $this->ldap = $this->getMockBuilder(Ldap::class)
             ->setConstructorArgs(array(
                 $this->symfonyLdap,
