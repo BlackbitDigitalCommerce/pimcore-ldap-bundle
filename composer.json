@@ -1,5 +1,5 @@
 {
-    "name": "blackbit_digital_commerce/ldap-bundle",
+    "name": "blackbit_digital_commerce/pimcore-ldap",
     "type": "pimcore-bundle",
     "description": "Ldap bundle for Pimcore",
     "keywords": [
