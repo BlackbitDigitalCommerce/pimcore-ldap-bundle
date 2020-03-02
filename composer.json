@@ -1,5 +1,5 @@
 {
-    "name": "alep/ldap-bundle",
+    "name": "blackbit_digital_commerce/ldap-bundle",
     "type": "pimcore-bundle",
     "description": "Ldap bundle for Pimcore",
     "keywords": [
@@ -13,6 +13,11 @@
       {
         "name": "Alessandro Pozzi",
         "email": "alexpozzi87@gmail.com",
+        "role": "Developer"
+      },
+      {
+        "name": "Blackbit",
+        "email": "info@blackbit.de",
         "role": "Developer"
       }
     ],
