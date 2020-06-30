@@ -104,7 +104,11 @@ class Ldap
         $this->mapper = $mapper;
         $this->logger = $logger;
 
-        $this->ldap->bind($searchDn, $searchPassword);
+        try {
+            $this->ldap->bind($searchDn, $searchPassword);
+        } catch(ConnectionException $e) {
+            $this->logger->alert('Invalid LDAP credentials');
+        }
     }
 
     /**

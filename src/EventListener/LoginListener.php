@@ -17,21 +17,24 @@ namespace Alep\LdapBundle\EventListener;
 use Alep\LdapBundle\Service\Ldap;
 use Pimcore\Event\Admin\Login\LoginCredentialsEvent;
 use Pimcore\Event\Admin\Login\LoginFailedEvent;
+use Psr\Log\LoggerInterface;
 
 class LoginListener
 {
-    /**
-     * @var Ldap
-     */
+    /** @var Ldap */
     private $ldap;
+
+    /** @var LoggerInterface */
+    private $logger;
 
     /**
      * LoginListener constructor.
      * @param Ldap $ldap
      */
-    public function __construct(Ldap $ldap)
+    public function __construct(Ldap $ldap, LoggerInterface $logger)
     {
         $this->ldap = $ldap;
+        $this->logger = $logger;
     }
 
     /**
@@ -55,11 +58,16 @@ class LoginListener
             return;
         }
 
-        //Authenticate via ldap
-        $ldapUser = $this->ldap->authenticate($username, $password);
+        try {
+            //Authenticate via ldap
+            $ldapUser = $this->ldap->authenticate($username, $password);
 
-        //Update Pimcore user
-        $this->ldap->updatePimcoreUser($username, $password, $ldapUser);
+            //Update Pimcore user
+            $this->ldap->updatePimcoreUser($username, $password, $ldapUser);
+        } catch (\Exception $e) {
+            $this->logger->warning($e->getMessage());
+            return;
+        }
     }
 
     /**
@@ -76,13 +84,18 @@ class LoginListener
             return;
         }
 
-        //authenticate via ldap
-        $ldapUser = $this->ldap->authenticate($username, $password);
+        try {
+            //authenticate via ldap
+            $ldapUser = $this->ldap->authenticate($username, $password);
 
-        //Update Pimcore user
-        $pimcoreUser = $this->ldap->updatePimcoreUser($username, $password, $ldapUser);
+            //Update Pimcore user
+            $pimcoreUser = $this->ldap->updatePimcoreUser($username, $password, $ldapUser);
 
-        //Update session
-        $event->setUser($pimcoreUser);
+            //Update session
+            $event->setUser($pimcoreUser);
+        } catch (\Exception $e) {
+            $this->logger->warning($e->getMessage());
+            return;
+        }
     }
 }
