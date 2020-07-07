@@ -10,6 +10,7 @@ namespace Alep\LdapBundle\Service;
 
 use Alep\LdapBundle\DataMapper\LdapUserMapperInterface;
 use Symfony\Component\Ldap\Entry;
+use Symfony\Component\Ldap\Exception\NotBoundException;
 use Symfony\Component\Ldap\LdapInterface;
 use Symfony\Component\Ldap\Exception\ConnectionException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
@@ -104,10 +105,12 @@ class Ldap
         $this->mapper = $mapper;
         $this->logger = $logger;
 
-        try {
-            $this->ldap->bind($searchDn, $searchPassword);
-        } catch(ConnectionException $e) {
-            $this->logger->alert('Invalid LDAP credentials');
+        if($searchDn) {
+            try {
+                $this->ldap->bind($searchDn, $searchPassword);
+            } catch (ConnectionException $e) {
+                $this->logger->alert('Invalid LDAP credentials');
+            }
         }
     }
 
@@ -206,7 +209,7 @@ class Ldap
         }
 
         //Get user from ldap
-        $ldapUser = $this->getLdapUser($username);
+        $ldapUser = $this->getLdapUser($username, $password);
 
         if (!($ldapUser instanceof Entry)) {
             $this->logger->error(sprintf("Login failed for user '%s'. The presented username is not valid.", $username));
@@ -259,17 +262,25 @@ class Ldap
      * @param string $username
      * @return mixed|null|Entry
      */
-    protected function getLdapUser($username)
+    protected function getLdapUser($username, $password)
     {
         //Search for ldap user
         $filter = str_replace('{username}', $username, $this->filter);
 
         $this->logger->debug(sprintf("Searching for ldap user '%s' with the base dn '%s' and the filter '%s'.", $username, $this->baseDn, $filter));
 
-        $queryResults = $this->ldap->query(
-            $this->baseDn,
-            $filter
-        )->execute();
+        try {
+            $queryResults = $this->ldap->query(
+                $this->baseDn,
+                $filter
+            )->execute();
+        } catch(NotBoundException $e) {
+            $this->ldap->bind('uid='.$username.','.$this->baseDn, $password);
+            $queryResults = $this->ldap->query(
+                $this->baseDn,
+                $filter
+            )->execute();
+        }
 
         //Check if ldap user exists
         if ($queryResults->count() === 1) {
