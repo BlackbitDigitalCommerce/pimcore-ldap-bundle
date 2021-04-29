@@ -32,7 +32,7 @@ class Configuration implements ConfigurationInterface
     {
         $kernelVersion = Kernel::MAJOR_VERSION;
 
-        if ($kernelVersion > 5) {
+        if ($kernelVersion >= 5) {
             $treeBuilder = new TreeBuilder('alep_ldap');
             $rootNode = $treeBuilder->getRootNode();
         } else {
