@@ -16,6 +16,7 @@ namespace Alep\LdapBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * This is the class that validates and merges configuration from your app/config files.
@@ -29,8 +30,15 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder('alep_ldap');
-        $rootNode = $treeBuilder->getRootNode();
+        $kernelVersion = Kernel::MAJOR_VERSION;
+
+        if ($kernelVersion > 5) {
+            $treeBuilder = new TreeBuilder('alep_ldap');
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            $treeBuilder = new TreeBuilder();
+            $rootNode = $treeBuilder->root('alep_ldap');
+        }
 
         $rootNode
             ->children()
