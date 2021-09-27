@@ -24,13 +24,8 @@
     "require": {
       "php": ">=7.0",
       "ext-ldap": "*",
-      "symfony/symfony": ">=3.4.3",
       "symfony/ldap": ">=3.4.3",
       "pimcore/pimcore": ">=5.1.0"
-    },
-    "require-dev": {
-      "phpunit/phpunit": "^7.5",
-      "friendsofphp/php-cs-fixer": "^2.15"
     },
     "autoload": {
         "psr-4" : {
