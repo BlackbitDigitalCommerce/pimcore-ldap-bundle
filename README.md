@@ -76,3 +76,7 @@ The [DefaultLdapUserMapper](https://github.com/alexpozzi/pimcore-ldap-bundle/blo
 * givenName -> Firstname
 * sn -> Lastname
 * mail -> Email
+
+## About Blackbit
+
+Beside of this Pimcore plugin Blackbit also offers [other bundles, individual development, consulting and hosting for your Pimcore project](https://pimcore.com/en/partners/find-a-solution-partner/blackbit_p79).
