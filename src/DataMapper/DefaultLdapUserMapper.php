@@ -43,7 +43,7 @@ class DefaultLdapUserMapper implements LdapUserMapperInterface
         $user->setLastname($lastName);
 
         $ldapMail = $ldapUser->getAttribute('mail');
-        $email = (is_array($ldapMail)) ? implode(', ', $ldapMail) : (string) $ldapMail;
+        $email = (is_array($ldapMail)) ? reset($ldapMail) : (string) $ldapMail;
         $user->setEmail($email);
 
         $user->setActive(true);
