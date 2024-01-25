@@ -8,6 +8,7 @@
       "pimcore",
       "ldap"
     ],
+    "version": "1.5.3",
     "license": "GPL-3.0-or-later",
     "authors": [
       {
@@ -22,10 +23,10 @@
       }
     ],
     "require": {
-      "php": ">=7.0",
+      "php": ">=8.0",
       "ext-ldap": "*",
-      "symfony/ldap": ">=3.4.3",
-      "pimcore/pimcore": ">=5.1.0"
+      "symfony/ldap": ">=6.3",
+      "pimcore/pimcore": ">=11"
     },
     "autoload": {
         "psr-4" : {
